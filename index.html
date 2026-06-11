@@ -386,19 +386,44 @@
 window.SITE_CONFIG = {
   photos: {
     climbing: [
+      // "images/climbing-01.jpg",
+      // "images/climbing-02.jpg",
     ],
     city: [
+      // "images/city-01.jpg",
     ],
     foods: [
+      // "images/foods-01.jpg",
     ],
     luna: [
     ]
   },
   links: [
-    { label: "X", url: "" },
+    { label: "X",         url: "" },
     { label: "Instagram", url: "" }
   ],
-  serialUrl: ""
+  serialUrl: "",
+  texts: {
+    prologue: [
+      "対象は、視線によって姿を変える。\nあらゆる単位の時間によっても、その姿を変える。",
+      "撮ること、登ること、書くこと。\nかたちは違っても、見ることの仕事はひとつだと思っている。"
+    ],
+    climbing: [
+      "岩を登ること、自分の体で登ること、それは自分の限界を認識して、受け入れること。",
+      "次の一手は未知への一手であって、不安と危険はぬぐえない。岩と手足との接点が確かであることは一度だってあり得ないけれど、足は踏み出さなくてはいけないし、次の一手も差し出さなくてはいけないのだ。",
+      "人生がそうであるように。"
+    ],
+    city: [
+      "都市は通行者の視線によって姿を変える。あらゆる単位の時間によってもその姿を変える。",
+      "都市の構成要素である個々の建築物の輪郭を取り出し、都市の断片とそこに付随する記憶を抽出することを試みている。"
+    ],
+    foods: [
+      "カフェ、喫茶店はどこを切り取ってもこだわりが詰まっている。飲食物を筆頭に、食事、食器、家具、照明、内装、その全てが作為的に選択されたものである。",
+      "それだけでは世の中の飲食店は似たり寄ったりになってしまうのだが、どこに位置するのか、という土地性の作用によって、その店は唯一無二の存在となるのである。"
+    ],
+    luna: "どれほど近くにいても、見えるのはいつも同じ面だけだ。\n裏側は、決して描かれない。",
+    about: "1998年生まれ。小学三年生の時、叔父から一眼レフを譲り受け、\n野鳥や天体を撮ることから始めた。\n以来、岩を登り、都市を歩き、言葉を書きながら、\n見ることの仕事を続けている。東京を拠点に。"
+  }
 };
 </script>
 
@@ -419,14 +444,8 @@ window.SITE_CONFIG = {
 <!-- 1. prologue -->
 <section id="prologue">
   <div class="inner">
-    <p class="statement rv">
-      対象は、<em>視線</em>によって姿を変える。<br>
-      あらゆる単位の<em>時間</em>によっても、その姿を変える。
-    </p>
-    <p class="statement rv d2" style="margin-top:5vh;">
-      撮ること、登ること、書くこと。<br>
-      かたちは違っても、見ることの仕事はひとつだと思っている。
-    </p>
+    <p class="statement rv" id="txt-prologue-0"></p>
+    <p class="statement rv d2" id="txt-prologue-1" style="margin-top:5vh;"></p>
   </div>
 </section>
 
@@ -441,9 +460,9 @@ window.SITE_CONFIG = {
       <h2>Climbing</h2>
       <span class="ja">限界について</span>
     </div>
-    <p class="rv d1">岩を登ること、自分の体で登ること、それは自分の限界を認識して、受け入れること。</p>
-    <p class="rv d2">次の一手は未知への一手であって、不安と危険はぬぐえない。岩と手足との接点が確かであることは一度だってあり得ないけれど、足は踏み出さなくてはいけないし、次の一手も差し出さなくてはいけないのだ。</p>
-    <p class="last rv d3">人生がそうであるように。</p>
+    <p class="rv d1" id="txt-climbing-0"></p>
+    <p class="rv d2" id="txt-climbing-1"></p>
+    <p class="last rv d3" id="txt-climbing-2"></p>
   </div>
 </section>
 
@@ -458,8 +477,8 @@ window.SITE_CONFIG = {
       <h2>City</h2>
       <span class="ja">記憶について</span>
     </div>
-    <p class="rv d1">都市は通行者の視線によって姿を変える。あらゆる単位の時間によってもその姿を変える。</p>
-    <p class="rv d2">都市の構成要素である個々の建築物の輪郭を取り出し、都市の断片とそこに付随する記憶を抽出することを試みている。</p>
+    <p class="rv d1" id="txt-city-0"></p>
+    <p class="rv d2" id="txt-city-1"></p>
   </div>
 </section>
 
@@ -474,8 +493,8 @@ window.SITE_CONFIG = {
       <h2>Foods &amp; Drinks</h2>
       <span class="ja">一回性について</span>
     </div>
-    <p class="rv d1">カフェ、喫茶店はどこを切り取ってもこだわりが詰まっている。飲食物を筆頭に、食事、食器、家具、照明、内装、その全てが作為的に選択されたものである。</p>
-    <p class="rv d2">それだけでは世の中の飲食店は似たり寄ったりになってしまうのだが、どこに位置するのか、という土地性の作用によって、その店は唯一無二の存在となるのである。</p>
+    <p class="rv d1" id="txt-foods-0"></p>
+    <p class="rv d2" id="txt-foods-1"></p>
   </div>
 </section>
 
@@ -485,7 +504,7 @@ window.SITE_CONFIG = {
 <section id="luna">
   <div class="inner">
     <div class="moonroom rv"><canvas id="cv-moon"></canvas></div>
-    <p class="rv d1">どれほど近くにいても、見えるのはいつも同じ面だけだ。<br>裏側は、決して描かれない。</p>
+    <p class="rv d1" id="txt-luna"></p>
     <span class="title-cite rv d2" id="serial">脳裏は月の裏ほどわからない</span>
     <span class="cite-label rv d3">— 連載中</span>
   </div>
@@ -500,12 +519,7 @@ window.SITE_CONFIG = {
       <h2>About</h2>
       <span class="ja">長田 海音 — Kaito O.</span>
     </div>
-    <p class="statement rv d1">
-      1998年生まれ。小学三年生の時、叔父から一眼レフを譲り受け、<br>
-      野鳥や天体を撮ることから始めた。<br>
-      以来、岩を登り、都市を歩き、言葉を書きながら、<br>
-      見ることの仕事を続けている。東京を拠点に。
-    </p>
+    <p class="statement rv d1" id="txt-about"></p>
     <nav class="links rv d2" id="links"></nav>
   </div>
 </section>
@@ -592,8 +606,27 @@ window.SITE_CONFIG = {
   tickClock();
   setInterval(tickClock, 10 * 1000);
 
-  /* ============ user content (photos & links) ============ */
+  /* ============ texts ============ */
+  function nl2br(str) {
+    var el = document.createDocumentFragment();
+    (str || '').split('\n').forEach(function (line, i, arr) {
+      el.appendChild(document.createTextNode(line));
+      if (i < arr.length - 1) el.appendChild(document.createElement('br'));
+    });
+    return el;
+  }
+  function setTxt(id, val) {
+    var el = document.getElementById(id);
+    if (el && val) { el.innerHTML = ''; el.appendChild(nl2br(val)); }
+  }
   var cfg = window.SITE_CONFIG || {};
+  var tx = (cfg.texts || {});
+  if (Array.isArray(tx.prologue)) { tx.prologue.forEach(function(t,i){ setTxt('txt-prologue-'+i, t); }); }
+  if (Array.isArray(tx.climbing)) { tx.climbing.forEach(function(t,i){ setTxt('txt-climbing-'+i, t); }); }
+  if (Array.isArray(tx.city))     { tx.city.forEach(function(t,i){ setTxt('txt-city-'+i, t); }); }
+  if (Array.isArray(tx.foods))    { tx.foods.forEach(function(t,i){ setTxt('txt-foods-'+i, t); }); }
+  setTxt('txt-luna', tx.luna);
+  setTxt('txt-about', tx.about);
   function renderPhotos(sectionId, list) {
     if (!list || !list.length) return;
     var sec = document.getElementById(sectionId);
