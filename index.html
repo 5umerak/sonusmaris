@@ -220,7 +220,11 @@
     border-bottom: 1px solid var(--faint);
     padding: 10px 6px 8px;
     cursor: pointer;
-    transition: color .45s ease, border-color .45s ease, transform .45s ease;
+    transition: color .45s ease, border-color .45s ease;
+  }
+  #luna a.title-cite .serial-inner {
+    display: inline-block;
+    transition: transform .45s ease;
   }
   #luna a.title-cite::after {
     content: " ↗";
@@ -231,8 +235,11 @@
   #luna a.title-cite:hover, #luna a.title-cite:focus-visible {
     color: var(--ink);
     border-bottom-color: var(--ink);
-    transform: translateY(-2px);
     outline: none;
+  }
+  #luna a.title-cite:hover .serial-inner,
+  #luna a.title-cite:focus-visible .serial-inner {
+    transform: translateY(-2px);
   }
   #luna a.title-cite:hover::after { color: var(--ink); }
   #luna .cite-label {
@@ -362,12 +369,15 @@
     width: 21px;
     height: 21px;
     color: var(--faint);
-    transition: color .5s ease, transform .5s ease;
+    transition: color .45s ease;
   }
+  .sociallinks a svg { transition: transform .45s ease; }
   .sociallinks a:hover, .sociallinks a:focus-visible {
     color: var(--ink);
-    transform: translateY(-2px);
     outline: none;
+  }
+  .sociallinks a:hover svg, .sociallinks a:focus-visible svg {
+    transform: translateY(-2px);
   }
   .sociallinks svg { width: 100%; height: 100%; fill: currentColor; display: block; }
   .sociallinks a.txt {
@@ -377,8 +387,9 @@
     letter-spacing: 0.3em;
     color: var(--faint);
     text-decoration: none;
+    transition: color .45s ease;
   }
-  .sociallinks a.txt:hover { color: var(--ink); transform: none; }
+  .sociallinks a.txt:hover { color: var(--ink); }
 
   @media (max-width: 640px) {
     section { padding: 16vh 8vw; }
@@ -412,18 +423,24 @@
 window.SITE_CONFIG = {
   photos: {
     climbing: [
+      "images/d9c7912c-1b04-4c4f-9971-e56568708365.jpg",
+      "images/b3f539e6-39e4-4b0c-b680-9f9af6236902.jpg",
     ],
     city: [
       "images/img_6853.jpg",
+      "images/_z8a9950.jpg",
     ],
     foods: [
+      "images/img_0576.jpg",
+      "images/img_2140_vsco.jpg",
     ],
     luna: [
+      "images/img_1444_original.jpg",
     ]
   },
   links: [
     { label: "X", url: "https://x.com/_oynm" },
-    { label: "Instagram", url: "https://www.instagram.com/sonus_maris" }
+    { label: "Instagram", url: "https://www.instagram.com/sonus_maris?igsh=MXh0dTB2OXppejJnNQ%3D%3D&utm_source=qr" }
   ],
   serialUrl: "https://note.com/sumerak",
   texts: {
@@ -748,7 +765,10 @@ window.SITE_CONFIG = {
     sa.rel = 'noopener';
     sa.className = serialEl.className;
     sa.id = 'serial';
-    sa.textContent = serialEl.textContent;
+    var sspan = document.createElement('span');
+    sspan.className = 'serial-inner';
+    sspan.textContent = serialEl.textContent;
+    sa.appendChild(sspan);
     serialEl.parentNode.replaceChild(sa, serialEl);
   }
 
