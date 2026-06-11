@@ -214,8 +214,27 @@
     border-bottom: 1px solid var(--hair);
     padding-bottom: 6px;
   }
-  #luna a.title-cite { color: inherit; text-decoration: none; transition: border-color .5s ease; }
-  #luna a.title-cite:hover { border-bottom-color: var(--ink); }
+  #luna a.title-cite {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--faint);
+    padding: 10px 6px 8px;
+    cursor: pointer;
+    transition: color .45s ease, border-color .45s ease, transform .45s ease;
+  }
+  #luna a.title-cite::after {
+    content: " ↗";
+    font-size: 0.72em;
+    color: var(--faint);
+    transition: color .45s ease;
+  }
+  #luna a.title-cite:hover, #luna a.title-cite:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+    transform: translateY(-2px);
+    outline: none;
+  }
+  #luna a.title-cite:hover::after { color: var(--ink); }
   #luna .cite-label {
     display: block;
     margin-top: 1.6em;
@@ -332,27 +351,34 @@
   #lb-close:hover { opacity: 1; border-color: rgba(255,255,255,0.7); }
 
   /* ---------- user links ---------- */
-  .links {
+  .sociallinks {
     display: flex;
-    gap: 2.8em;
-    flex-wrap: wrap;
-    margin-top: 5vh;
+    gap: 2.2em;
+    justify-content: center;
+    align-items: center;
   }
-  .links a {
+  .sociallinks a {
+    display: block;
+    width: 21px;
+    height: 21px;
+    color: var(--faint);
+    transition: color .5s ease, transform .5s ease;
+  }
+  .sociallinks a:hover, .sociallinks a:focus-visible {
+    color: var(--ink);
+    transform: translateY(-2px);
+    outline: none;
+  }
+  .sociallinks svg { width: 100%; height: 100%; fill: currentColor; display: block; }
+  .sociallinks a.txt {
+    width: auto; height: auto;
     font-family: 'Cormorant Garamond', serif;
     font-size: 12px;
     letter-spacing: 0.3em;
     color: var(--faint);
     text-decoration: none;
-    padding-bottom: 3px;
-    border-bottom: 1px solid transparent;
-    transition: color .6s ease, border-color .6s ease;
   }
-  .links a:hover, .links a:focus-visible {
-    color: var(--ink);
-    border-bottom-color: var(--hair);
-    outline: none;
-  }
+  .sociallinks a.txt:hover { color: var(--ink); transform: none; }
 
   @media (max-width: 640px) {
     section { padding: 16vh 8vw; }
@@ -386,44 +412,43 @@
 window.SITE_CONFIG = {
   photos: {
     climbing: [
+      // "images/climbing-01.jpg",
+      // "images/climbing-02.jpg",
     ],
     city: [
-      "images/_z8a9859.jpg",
-      "images/_z8a9949.jpg",
+      // "images/city-01.jpg",
     ],
     foods: [
-      "images/ee991d14-8706-4b94-a9da-2523281abdd6.jpg",
-      "images/c5d031d83363ba8d668f943e2fe5bf10.jpg",
+      // "images/foods-01.jpg",
     ],
     luna: [
-      "images/img_1444_original.jpg",
     ]
   },
   links: [
-    { label: "X", url: "https://x.com/_oynm" },
-    { label: "Instagram", url: "https://www.instagram.com/sonus_maris?igsh=MXh0dTB2OXppejJnNQ%3D%3D&utm_source=qr" }
+    { label: "X",         url: "" },
+    { label: "Instagram", url: "" }
   ],
-  serialUrl: "https://note.com/sumerak",
+  serialUrl: "",
   texts: {
     prologue: [
-      "対象は、視線によって姿を変える。\n",
-      "撮ること、登ること、書くこと。\nかたちは違っても、それらすべて、世界を見るということに収斂する。",
+      "対象は、視線によって姿を変える。\nあらゆる単位の時間によっても、その姿を変える。",
+      "撮ること、登ること、書くこと。\nかたちは違っても、見ることの仕事はひとつだと思っている。"
     ],
     climbing: [
       "岩を登ること、自分の体で登ること、それは自分の限界を認識して、受け入れること。",
-      "次の一手は未知への一手であって、不安と危険はつきまとう。岩と手足との接点が確かであることは一度だってあり得ないけれど、足は踏み出さなくてはいけないし、次の一手を出さなくてはいけない。",
-      "人生がそうであるように。",
+      "次の一手は未知への一手であって、不安と危険はぬぐえない。岩と手足との接点が確かであることは一度だってあり得ないけれど、足は踏み出さなくてはいけないし、次の一手も差し出さなくてはいけないのだ。",
+      "人生がそうであるように。"
     ],
     city: [
       "都市は通行者の視線によって姿を変える。あらゆる単位の時間によってもその姿を変える。",
-      "都市の構成要素である個々の建築物の輪郭を取り出し、都市の断片とそこに付随する記憶を抽出することを試みている。",
+      "都市の構成要素である個々の建築物の輪郭を取り出し、都市の断片とそこに付随する記憶を抽出することを試みている。"
     ],
     foods: [
       "カフェ、喫茶店はどこを切り取ってもこだわりが詰まっている。飲食物を筆頭に、食事、食器、家具、照明、内装、その全てが作為的に選択されたものである。",
-      "それだけでは世の中の飲食店は似たり寄ったりになってしまうが、どこに位置するのか、という土地性の作用が加わることによって、その店は唯一無二の存在となるのである。",
+      "それだけでは世の中の飲食店は似たり寄ったりになってしまうのだが、どこに位置するのか、という土地性の作用によって、その店は唯一無二の存在となるのである。"
     ],
-    luna: "どれほど近くにいても、見えるのはいつも同じ面だけ。\n裏側は、決して描かれない。",
-    about: "1998年生まれ。小学三年生の時、叔父から一眼レフを譲り受け、\n野鳥や天体を撮ることから始めた。\n以来、岩を登り、都市を歩き、言葉を書きながら、\n見ることを続けている。東京を拠点に。"
+    luna: "どれほど近くにいても、見えるのはいつも同じ面だけだ。\n裏側は、決して描かれない。",
+    about: "1998年生まれ。小学三年生の時、叔父から一眼レフを譲り受け、\n野鳥や天体を撮ることから始めた。\n以来、岩を登り、都市を歩き、言葉を書きながら、\n見ることの仕事を続けている。東京を拠点に。"
   }
 };
 </script>
@@ -521,7 +546,6 @@ window.SITE_CONFIG = {
       <span class="ja">長田 海音 — Kaito O.</span>
     </div>
     <p class="statement rv d1" id="txt-about"></p>
-    <nav class="links rv d2" id="links"></nav>
   </div>
 </section>
 
@@ -533,6 +557,7 @@ window.SITE_CONFIG = {
   <div class="inner" style="text-align:center;">
     <p class="line rv">音は、海に戻る。</p>
   </div>
+  <nav class="sociallinks rv d1" id="links"></nav>
   <div class="sig rv d2">Sonus Maris. <span class="name">— Kaito O.</span></div>
   <footer>© Kaito Osada</footer>
 </section>
@@ -546,17 +571,10 @@ window.SITE_CONFIG = {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ============ time-of-day palette ============ */
-  /* 背景は元のまま（夜は暗く、昼は明るい紙）。
-     文字色は「背景の明暗」に追従させ、夕暮れ・明け方の遷移帯でも可読性を保つ。 */
-  var NIGHT = { bg: [10, 12, 16],   ink: [220, 216, 206] };  // 暗背景 → 明文字
-  var DAY   = { bg: [238, 236, 230], ink: [30, 31, 35] };    // 明背景 → 暗文字
+  var NIGHT = { bg: [10, 12, 16],  ink: [216, 212, 202], faint: [74, 84, 95] };
+  var DAY   = { bg: [238, 236, 230], ink: [28, 30, 35],  faint: [160, 154, 142] };
 
-  // 可読性の床（フロア）に使う文字色の両極（暖色寄り）と、最低コントラスト比
-  var INK_HI = [228, 224, 214];   // ほぼ白
-  var INK_LO = [26, 26, 29];      // ほぼ黒
-  var MIN_CONTRAST = 4.5;         // WCAG AA本文の目安
-
-  var col = { bg: NIGHT.bg.slice(), ink: NIGHT.ink.slice(), faint: [120, 120, 120] };
+  var col = { bg: NIGHT.bg.slice(), ink: NIGHT.ink.slice(), faint: NIGHT.faint.slice() };
 
   function lerp(a, b, t) { return a + (b - a) * t; }
   function lerp3(a, b, t) { return [lerp(a[0],b[0],t), lerp(a[1],b[1],t), lerp(a[2],b[2],t)]; }
@@ -564,14 +582,6 @@ window.SITE_CONFIG = {
     return alpha === undefined
       ? 'rgb(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ')'
       : 'rgba(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ',' + alpha + ')';
-  }
-
-  /* --- 相対輝度とコントラスト比（WCAG 2.x） --- */
-  function chan(v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
-  function lum(c) { return 0.2126 * chan(c[0]) + 0.7152 * chan(c[1]) + 0.0722 * chan(c[2]); }
-  function contrast(a, b) {
-    var la = lum(a), lb = lum(b), hi = Math.max(la, lb), lo = Math.min(la, lb);
-    return (hi + 0.05) / (lo + 0.05);
   }
 
   function daylight(h) {
@@ -587,8 +597,6 @@ window.SITE_CONFIG = {
     var d2 = Math.exp(-Math.pow((h - 6.2) / 1.0, 2)) * 0.6;
     return Math.max(d1, d2);
   }
-  // 文字の反転を背景より急峻にし、明暗の交差（＝低コントラスト帯）を一瞬に圧縮する
-  function steep(t) { return 1 / (1 + Math.exp(-12 * (t - 0.5))); }
 
   function applyPalette() {
     var now = new Date();
@@ -596,27 +604,19 @@ window.SITE_CONFIG = {
     var t = daylight(h);
     var g = duskGlow(h);
 
-    // --- 背景：従来の挙動を維持 ---
-    col.bg = lerp3(NIGHT.bg, DAY.bg, t);
-    col.bg[0] = Math.min(255, col.bg[0] + g * 14); // dusk warmth
+    col.bg    = lerp3(NIGHT.bg, DAY.bg, t);
+    col.ink   = lerp3(NIGHT.ink, DAY.ink, t);
+    col.faint = lerp3(NIGHT.faint, DAY.faint, t);
+
+    // dusk: faint warmth into the background
+    col.bg[0] = Math.min(255, col.bg[0] + g * 14);
     col.bg[1] = Math.min(255, col.bg[1] + g * 5);
-
-    // --- 文字：背景の明暗に追従（急峻に反転） ---
-    col.ink = lerp3(NIGHT.ink, DAY.ink, steep(t));
-
-    // --- 可読性の床：交差点でコントラストが落ちたら、明暗どちらか強い側へ寄せて担保 ---
-    if (contrast(col.ink, col.bg) < MIN_CONTRAST) {
-      col.ink = (contrast(INK_HI, col.bg) >= contrast(INK_LO, col.bg) ? INK_HI : INK_LO).slice();
-    }
-
-    // --- 補助文字：本文と背景の中間に置き、常に「読めるが控えめ」を維持 ---
-    col.faint = lerp3(col.ink, col.bg, 0.42);
 
     var root = document.documentElement.style;
     root.setProperty('--bg', rgb(col.bg));
     root.setProperty('--ink', rgb(col.ink));
     root.setProperty('--faint', rgb(col.faint));
-    root.setProperty('--hair', rgb(col.ink, 0.13));
+    root.setProperty('--hair', rgb(col.ink, 0.14));
   }
   applyPalette();
   setInterval(applyPalette, 60 * 1000);
@@ -713,15 +713,32 @@ window.SITE_CONFIG = {
     renderPhotos('foods', cfg.photos.foods);
     renderPhotos('luna', cfg.photos.luna);
   }
+  var SOCIAL_ICONS = {
+    x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>',
+    instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>'
+  };
+  function socialIconFor(label) {
+    var k = (label || '').toLowerCase();
+    if (k === 'x' || k.indexOf('twitter') >= 0) return SOCIAL_ICONS.x;
+    if (k.indexOf('insta') >= 0) return SOCIAL_ICONS.instagram;
+    return null;
+  }
   var linksEl = document.getElementById('links');
   if (linksEl) {
     (cfg.links || []).forEach(function (l) {
       if (!l || !l.url) return;
       var a = document.createElement('a');
       a.href = l.url;
-      a.textContent = l.label || l.url;
       a.target = '_blank';
       a.rel = 'noopener';
+      a.setAttribute('aria-label', l.label || 'link');
+      var icon = socialIconFor(l.label);
+      if (icon) {
+        a.innerHTML = icon;
+      } else {
+        a.className = 'txt';
+        a.textContent = l.label || l.url;
+      }
       linksEl.appendChild(a);
     });
     if (!linksEl.children.length) linksEl.remove();
