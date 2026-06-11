@@ -372,7 +372,7 @@
 
 <script>
 /* =========================================================
-   ▼ コンテンツ設定 — このブロックだけ編集すればおｋ
+   ▼ コンテンツ設定 — 編集するのはこのブロックだけ
    ---------------------------------------------------------
    photos : 各章の本文の下に表示される写真。
             同じフォルダに置いた相対パス("images/xxx.jpg")か、
@@ -386,40 +386,38 @@
 window.SITE_CONFIG = {
   photos: {
     climbing: [
-      // "images/climbing-01.jpg",
-      // "images/climbing-02.jpg",
     ],
     city: [
-      // "images/city-01.jpg",
+      "images/_z8a8801_vsco.jpg",
+      "images/_z8a8808_vsco.jpg",
     ],
     foods: [
-      // "images/foods-01.jpg",
     ],
     luna: [
     ]
   },
   links: [
-    { label: "X",         url: "" },
+    { label: "X", url: "" },
     { label: "Instagram", url: "" }
   ],
   serialUrl: "",
   texts: {
     prologue: [
       "対象は、視線によって姿を変える。\nあらゆる単位の時間によっても、その姿を変える。",
-      "撮ること、登ること、書くこと。\nかたちは違っても、見ることの仕事はひとつだと思っている。"
+      "撮ること、登ること、書くこと。\nかたちは違っても、見ることの仕事はひとつだと思っている。",
     ],
     climbing: [
       "岩を登ること、自分の体で登ること、それは自分の限界を認識して、受け入れること。",
       "次の一手は未知への一手であって、不安と危険はぬぐえない。岩と手足との接点が確かであることは一度だってあり得ないけれど、足は踏み出さなくてはいけないし、次の一手も差し出さなくてはいけないのだ。",
-      "人生がそうであるように。"
+      "人生がそうであるように。",
     ],
     city: [
       "都市は通行者の視線によって姿を変える。あらゆる単位の時間によってもその姿を変える。",
-      "都市の構成要素である個々の建築物の輪郭を取り出し、都市の断片とそこに付随する記憶を抽出することを試みている。"
+      "都市の構成要素である個々の建築物の輪郭を取り出し、都市の断片とそこに付随する記憶を抽出することを試みている。",
     ],
     foods: [
       "カフェ、喫茶店はどこを切り取ってもこだわりが詰まっている。飲食物を筆頭に、食事、食器、家具、照明、内装、その全てが作為的に選択されたものである。",
-      "それだけでは世の中の飲食店は似たり寄ったりになってしまうのだが、どこに位置するのか、という土地性の作用によって、その店は唯一無二の存在となるのである。"
+      "それだけでは世の中の飲食店は似たり寄ったりになってしまうのだが、どこに位置するのか、という土地性の作用によって、その店は唯一無二の存在となるのである。",
     ],
     luna: "どれほど近くにいても、見えるのはいつも同じ面だけだ。\n裏側は、決して描かれない。",
     about: "1998年生まれ。小学三年生の時、叔父から一眼レフを譲り受け、\n野鳥や天体を撮ることから始めた。\n以来、岩を登り、都市を歩き、言葉を書きながら、\n見ることの仕事を続けている。東京を拠点に。"
@@ -458,7 +456,7 @@ window.SITE_CONFIG = {
     <div class="chapter-head rv">
       <span class="num">I</span>
       <h2>Climbing</h2>
-      <span class="ja">限界</span>
+      <span class="ja">限界について</span>
     </div>
     <p class="rv d1" id="txt-climbing-0"></p>
     <p class="rv d2" id="txt-climbing-1"></p>
@@ -475,7 +473,7 @@ window.SITE_CONFIG = {
     <div class="chapter-head rv">
       <span class="num">II</span>
       <h2>City</h2>
-      <span class="ja">記憶</span>
+      <span class="ja">記憶について</span>
     </div>
     <p class="rv d1" id="txt-city-0"></p>
     <p class="rv d2" id="txt-city-1"></p>
@@ -491,7 +489,7 @@ window.SITE_CONFIG = {
     <div class="chapter-head rv">
       <span class="num">III</span>
       <h2>Foods &amp; Drinks</h2>
-      <span class="ja">一回性</span>
+      <span class="ja">一回性について</span>
     </div>
     <p class="rv d1" id="txt-foods-0"></p>
     <p class="rv d2" id="txt-foods-1"></p>
@@ -530,7 +528,7 @@ window.SITE_CONFIG = {
 <section id="epilogue">
   <canvas id="cv-end"></canvas>
   <div class="inner" style="text-align:center;">
-    <p class="line rv">音は海に戻っていく。</p>
+    <p class="line rv">音は、海に戻る。</p>
   </div>
   <div class="sig rv d2">Sonus Maris. <span class="name">— Kaito O.</span></div>
   <footer>© Kaito Osada</footer>
