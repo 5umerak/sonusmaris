@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonus Maris.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --ink: #d8d4ca;
+    --faint: #4a545f;
+    --hair: rgba(216,212,202,0.14);
+    --dur: 1.6s;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    font-weight: 400;
+    transition: background-color 2.5s ease, color 2.5s ease;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--faint); color: var(--bg); }
+
+  /* ---------- chrome ---------- */
+  .chrome {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 22px 26px;
+    z-index: 50;
+    pointer-events: none;
+    mix-blend-mode: normal;
+  }
+  .chrome .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    text-transform: none;
+  }
+  .chrome .clock {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+    transition: color 2.5s ease;
+  }
+
+  /* ---------- sections ---------- */
+  section {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18vh 8vw;
+  }
+  section canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .inner {
+    position: relative;
+    z-index: 2;
+    max-width: 620px;
+    width: 100%;
+  }
+
+  /* reveal */
+  .rv {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--dur) cubic-bezier(.22,.61,.36,1), transform var(--dur) cubic-bezier(.22,.61,.36,1);
+  }
+  .rv.on { opacity: 1; transform: none; }
+  .rv.d1 { transition-delay: .15s; }
+  .rv.d2 { transition-delay: .3s; }
+  .rv.d3 { transition-delay: .45s; }
+
+  /* ---------- hero ---------- */
+  #hero { padding: 0 8vw; }
+  #hero .inner {
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4.5vh;
+  }
+  #hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(38px, 7.2vw, 84px);
+    letter-spacing: 0.16em;
+    line-height: 1;
+    text-align: center;
+  }
+  #hero .scrollhint {
+    position: absolute;
+    bottom: 4.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--faint);
+    animation: breathe 4.5s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100% { opacity: .25 } 50% { opacity: .8 } }
+
+  /* ---------- prologue ---------- */
+  .statement {
+    font-size: clamp(15px, 1.7vw, 18px);
+    line-height: 2.6;
+    letter-spacing: 0.06em;
+    text-align: left;
+  }
+  .statement em {
+    font-style: normal;
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 2px;
+  }
+  .note {
+    margin-top: 6vh;
+    font-size: 12px;
+    line-height: 2.4;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+    transition: color 2.5s ease;
+  }
+
+  /* ---------- chapters ---------- */
+  .chapter-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1.4em;
+    margin-bottom: 7vh;
+  }
+  .chapter-head .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    color: var(--faint);
+    transition: color 2.5s ease;
+  }
+  .chapter-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(26px, 3.4vw, 38px);
+    letter-spacing: 0.12em;
+    line-height: 1.1;
+  }
+  .chapter-head .ja {
+    font-size: 12px;
+    letter-spacing: 0.34em;
+    color: var(--faint);
+    transition: color 2.5s ease;
+  }
+  .chapter p {
+    font-size: clamp(14px, 1.55vw, 16.5px);
+    line-height: 2.7;
+    letter-spacing: 0.05em;
+    text-indent: 1em;
+  }
+  .chapter p + p { margin-top: 1.4em; }
+  .chapter .last {
+    margin-top: 2.2em;
+    text-indent: 0;
+    color: var(--ink);
+  }
+
+  /* city section needs taller room for the canvas to breathe */
+  #city { min-height: 130vh; }
+  #city .inner { align-self: flex-start; margin-top: 16vh; }
+  #city .hint {
+    margin-top: 4.5vh;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--faint);
+    transition: color 2.5s ease;
+  }
+
+  /* luna */
+  #luna .inner { text-align: center; max-width: 560px; }
+  #luna .moonroom {
+    height: 46vh;
+    min-height: 280px;
+    position: relative;
+    margin-bottom: 7vh;
+  }
+  #luna .moonroom canvas { position: absolute; inset: 0; }
+  #luna p {
+    font-size: clamp(14px, 1.55vw, 16.5px);
+    line-height: 2.7;
+    letter-spacing: 0.05em;
+  }
+  #luna .title-cite {
+    display: inline-block;
+    margin-top: 2em;
+    font-size: clamp(15px, 1.8vw, 19px);
+    letter-spacing: 0.14em;
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 6px;
+  }
+  #luna .cite-label {
+    display: block;
+    margin-top: 1.6em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--faint);
+    transition: color 2.5s ease;
+  }
+
+  /* ---------- epilogue ---------- */
+  #epilogue { min-height: 90vh; flex-direction: column; gap: 7vh; }
+  #epilogue .line {
+    font-size: clamp(15px, 1.8vw, 19px);
+    letter-spacing: 0.2em;
+  }
+  #epilogue .sig {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--faint);
+    transition: color 2.5s ease;
+  }
+  #epilogue .sig .name { font-style: italic; }
+  #epilogue footer {
+    position: absolute;
+    bottom: 3.5vh;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--faint);
+    opacity: .7;
+    transition: color 2.5s ease;
+  }
+
+  /* hairline divider between chapters */
+  .div {
+    height: 1px;
+    width: min(72px, 18vw);
+    background: var(--hair);
+    margin: 0 auto;
+  }
+
+  /* ---------- user photos ---------- */
+  .photos {
+    margin-top: 9vh;
+    display: flex;
+    flex-direction: column;
+    gap: 7vh;
+  }
+  .photos figure { margin: 0; }
+  .photos img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ---------- user links ---------- */
+  .links {
+    display: flex;
+    gap: 2.8em;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .links a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: color .6s ease, border-color .6s ease;
+  }
+  .links a:hover, .links a:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--hair);
+    outline: none;
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 16vh 8vw; }
+    .chapter-head { flex-direction: column; gap: .8em; }
+    .statement { line-height: 2.4; }
+    #city .inner { margin-top: 10vh; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv { transition: none; opacity: 1; transform: none; }
+    #hero .scrollhint { animation: none; opacity: .5; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<script>
+/* =========================================================
+   ▼ コンテンツ設定 — 編集するのはこのブロックだけ
+   ---------------------------------------------------------
+   photos : 各章の本文の下に表示される写真。
+            同じフォルダに置いた相対パス("images/xxx.jpg")か、
+            画像URLを "" で囲み、カンマ区切りで並べる。
+            空 [] のままなら、その章には何も表示されない。
+   links  : ページ末尾に表示されるリンク。
+            url が空("")のものは表示されない。
+   ========================================================= */
+window.SITE_CONFIG = {
+  photos: {
+    climbing: [
+      // "images/climbing-01.jpg",
+      // "images/climbing-02.jpg",
+    ],
+    city: [
+      // "images/city-01.jpg",
+    ],
+    foods: [
+      // "images/foods-01.jpg",
+    ],
+    luna: [
+    ]
+  },
+  links: [
+    { label: "Instagram", url: "" },
+    { label: "X",         url: "" },
+    { label: "note",      url: "" }
+  ]
+};
+</script>
+
+<div class="chrome">
+  <div class="logo">Sonus Maris.</div>
+  <div class="clock" id="clock">--:--</div>
+</div>
+
+<!-- 0. hero -->
+<section id="hero">
+  <canvas id="cv-sea"></canvas>
+  <div class="inner">
+    <h1 class="rv">Sonus Maris.</h1>
+  </div>
+  <div class="scrollhint">scroll</div>
+</section>
+
+<!-- 1. prologue -->
+<section id="prologue">
+  <div class="inner">
+    <p class="statement rv">
+      対象は、<em>視線</em>によって姿を変える。<br>
+      あらゆる単位の<em>時間</em>によっても、その姿を変える。
+    </p>
+    <p class="statement rv d2" style="margin-top:5vh;">
+      撮ること、登ること、書くこと。<br>
+      かたちは違っても、見ることの仕事はひとつだと思っている。
+    </p>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- 2. climbing -->
+<section id="climbing" class="chapter">
+  <canvas id="cv-climb"></canvas>
+  <div class="inner">
+    <div class="chapter-head rv">
+      <span class="num">I</span>
+      <h2>Climbing</h2>
+      <span class="ja">限界について</span>
+    </div>
+    <p class="rv d1">岩を登ること、自分の体で登ること、それは自分の限界を認識して、受け入れること。</p>
+    <p class="rv d2">次の一手は未知への一手であって、不安と危険はぬぐえない。岩と手足との接点が確かであることは一度だってあり得ないけれど、足は踏み出さなくてはいけないし、次の一手も差し出さなくてはいけないのだ。</p>
+    <p class="last rv d3">人生がそうであるように。</p>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- 3. city -->
+<section id="city" class="chapter">
+  <canvas id="cv-city"></canvas>
+  <div class="inner">
+    <div class="chapter-head rv">
+      <span class="num">II</span>
+      <h2>City</h2>
+      <span class="ja">記憶について</span>
+    </div>
+    <p class="rv d1">都市は通行者の視線によって姿を変える。あらゆる単位の時間によってもその姿を変える。</p>
+    <p class="rv d2">都市の構成要素である個々の建築物の輪郭を取り出し、都市の断片とそこに付随する記憶を抽出することを試みている。</p>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- 4. foods & drinks -->
+<section id="foods" class="chapter">
+  <canvas id="cv-foods"></canvas>
+  <div class="inner">
+    <div class="chapter-head rv">
+      <span class="num">III</span>
+      <h2>Foods &amp; Drinks</h2>
+      <span class="ja">一回性について</span>
+    </div>
+    <p class="rv d1">カフェ、喫茶店はどこを切り取ってもこだわりが詰まっている。飲食物を筆頭に、食事、食器、家具、照明、内装、その全てが作為的に選択されたものである。</p>
+    <p class="rv d2">それだけでは世の中の飲食店は似たり寄ったりになってしまうのだが、どこに位置するのか、という土地性の作用によって、その店は唯一無二の存在となるのである。</p>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- 5. luna -->
+<section id="luna">
+  <div class="inner">
+    <div class="moonroom rv"><canvas id="cv-moon"></canvas></div>
+    <p class="rv d1">どれほど近くにいても、見えるのはいつも同じ面だけだ。<br>裏側は、決して描かれない。</p>
+    <span class="title-cite rv d2">脳裏は月の裏ほどわからない</span>
+    <span class="cite-label rv d3">— 連載中</span>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- 6. epilogue -->
+<section id="epilogue">
+  <canvas id="cv-end"></canvas>
+  <div class="inner" style="text-align:center;">
+    <p class="line rv">音は、海に戻る。</p>
+  </div>
+  <nav class="links rv d1" id="links"></nav>
+  <div class="sig rv d2">Sonus Maris. <span class="name">— Kaito O.</span></div>
+  <footer>© Kaito Osada</footer>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ============ time-of-day palette ============ */
+  var NIGHT = { bg: [10, 12, 16],  ink: [216, 212, 202], faint: [74, 84, 95] };
+  var DAY   = { bg: [238, 236, 230], ink: [28, 30, 35],  faint: [160, 154, 142] };
+
+  var col = { bg: NIGHT.bg.slice(), ink: NIGHT.ink.slice(), faint: NIGHT.faint.slice() };
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerp3(a, b, t) { return [lerp(a[0],b[0],t), lerp(a[1],b[1],t), lerp(a[2],b[2],t)]; }
+  function rgb(c, alpha) {
+    return alpha === undefined
+      ? 'rgb(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ')'
+      : 'rgba(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ',' + alpha + ')';
+  }
+
+  function daylight(h) {
+    // 0 at night, 1 in day; smooth ramps at dawn (5-8) and dusk (16-19)
+    if (h <= 5 || h >= 19) return 0;
+    if (h >= 8 && h <= 16) return 1;
+    if (h < 8)  { var t = (h - 5) / 3; return t * t * (3 - 2 * t); }
+    var u = (19 - h) / 3; return u * u * (3 - 2 * u);
+  }
+  function duskGlow(h) {
+    // small warm bump around sunset / sunrise
+    var d1 = Math.exp(-Math.pow((h - 17.8) / 1.1, 2));
+    var d2 = Math.exp(-Math.pow((h - 6.2) / 1.0, 2)) * 0.6;
+    return Math.max(d1, d2);
+  }
+
+  function applyPalette() {
+    var now = new Date();
+    var h = now.getHours() + now.getMinutes() / 60;
+    var t = daylight(h);
+    var g = duskGlow(h);
+
+    col.bg    = lerp3(NIGHT.bg, DAY.bg, t);
+    col.ink   = lerp3(NIGHT.ink, DAY.ink, t);
+    col.faint = lerp3(NIGHT.faint, DAY.faint, t);
+
+    // dusk: faint warmth into the background
+    col.bg[0] = Math.min(255, col.bg[0] + g * 14);
+    col.bg[1] = Math.min(255, col.bg[1] + g * 5);
+
+    var root = document.documentElement.style;
+    root.setProperty('--bg', rgb(col.bg));
+    root.setProperty('--ink', rgb(col.ink));
+    root.setProperty('--faint', rgb(col.faint));
+    root.setProperty('--hair', rgb(col.ink, 0.14));
+  }
+  applyPalette();
+  setInterval(applyPalette, 60 * 1000);
+
+  /* clock */
+  var clockEl = document.getElementById('clock');
+  function tickClock() {
+    var n = new Date();
+    var hh = ('0' + n.getHours()).slice(-2);
+    var mm = ('0' + n.getMinutes()).slice(-2);
+    clockEl.textContent = hh + ':' + mm;
+  }
+  tickClock();
+  setInterval(tickClock, 10 * 1000);
+
+  /* ============ user content (photos & links) ============ */
+  var cfg = window.SITE_CONFIG || {};
+  function renderPhotos(sectionId, list) {
+    if (!list || !list.length) return;
+    var sec = document.getElementById(sectionId);
+    if (!sec) return;
+    var inner = sec.querySelector('.inner');
+    var wrap = document.createElement('div');
+    wrap.className = 'photos';
+    list.forEach(function (src) {
+      if (!src) return;
+      var f = document.createElement('figure');
+      f.className = 'rv';
+      var img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = src;
+      img.alt = '';
+      f.appendChild(img);
+      wrap.appendChild(f);
+    });
+    if (wrap.children.length) inner.appendChild(wrap);
+  }
+  if (cfg.photos) {
+    renderPhotos('climbing', cfg.photos.climbing);
+    renderPhotos('city', cfg.photos.city);
+    renderPhotos('foods', cfg.photos.foods);
+    renderPhotos('luna', cfg.photos.luna);
+  }
+  var linksEl = document.getElementById('links');
+  if (linksEl) {
+    (cfg.links || []).forEach(function (l) {
+      if (!l || !l.url) return;
+      var a = document.createElement('a');
+      a.href = l.url;
+      a.textContent = l.label || l.url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      linksEl.appendChild(a);
+    });
+    if (!linksEl.children.length) linksEl.remove();
+  }
+
+  /* ============ reveal on scroll ============ */
+  var revealed = document.querySelectorAll('.rv');
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }
+      });
+    }, { threshold: 0.25 });
+    revealed.forEach(function (el) { ro.observe(el); });
+  } else {
+    revealed.forEach(function (el) { el.classList.add('on'); });
+  }
+
+  /* ============ canvas infrastructure ============ */
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var pointer = { x: -9999, y: -9999, px: -9999, py: -9999, active: false };
+
+  window.addEventListener('pointermove', function (e) {
+    pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true;
+  }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (e.touches.length) {
+      pointer.x = e.touches[0].clientX; pointer.y = e.touches[0].clientY; pointer.active = true;
+    }
+  }, { passive: true });
+
+  function Stage(id, draw, opts) {
+    this.canvas = document.getElementById(id);
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    this.draw = draw;
+    this.visible = false;
+    this.t = Math.random() * 1000;
+    this.opts = opts || {};
+    this.w = 0; this.h = 0;
+    var self = this;
+
+    this.resize = function () {
+      var r = self.canvas.getBoundingClientRect();
+      self.w = r.width; self.h = r.height;
+      self.canvas.width = Math.round(r.width * DPR);
+      self.canvas.height = Math.round(r.height * DPR);
+      self.ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      if (self.opts.onResize) self.opts.onResize(self);
+    };
+    this.resize();
+    window.addEventListener('resize', this.resize);
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { self.visible = e.isIntersecting; });
+      }, { threshold: 0.02 });
+      io.observe(this.canvas);
+    } else { this.visible = true; }
+  }
+
+  var stages = [];
+
+  /* ============ 0. sea — layered organic waves ============ */
+  var sea = new Stage('cv-sea', function (s, dt) {
+    var ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+    var lines = 26;
+    var my = pointer.active ? Math.max(0, Math.min(1, pointer.y / h)) : 0.5;
+    var amp = 7 + my * 7;
+    for (var i = 0; i < lines; i++) {
+      var p = i / (lines - 1);
+      var y0 = h * 0.30 + p * h * 0.52;
+      var a = 0.05 + 0.16 * Math.sin(p * Math.PI);
+      ctx.beginPath();
+      ctx.strokeStyle = rgb(col.ink, a);
+      ctx.lineWidth = 0.7;
+      for (var x = 0; x <= w; x += 6) {
+        var n = Math.sin(x * 0.008 + s.t * 0.5 + i * 0.7)
+              + 0.5 * Math.sin(x * 0.021 - s.t * 0.32 + i * 1.3)
+              + 0.25 * Math.sin(x * 0.043 + s.t * 0.18 + i * 2.1);
+        var y = y0 + n * amp * (0.4 + 0.6 * Math.sin(p * Math.PI));
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  });
+  stages.push(sea);
+
+  /* ============ I. climbing — a line ascending into the unknown ============ */
+  function resetClimb(s) {
+    s.path = [{ x: s.w * (0.42 + Math.random() * 0.16), y: s.h + 10 }];
+    s.pause = 0;
+    s.fade = 0;
+    s.done = false;
+  }
+  var climb = new Stage('cv-climb', function (s, dt) {
+    var ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+
+    if (!s.done) {
+      if (s.pause > 0) {
+        s.pause -= dt;
+        // trembling while hesitating
+        var tip0 = s.path[s.path.length - 1];
+        tip0.tx = (Math.random() - 0.5) * 1.2;
+      } else {
+        var tip = s.path[s.path.length - 1];
+        var nx = tip.x + (Math.random() - 0.5) * 26;
+        nx = Math.max(w * 0.18, Math.min(w * 0.82, nx));
+        var ny = tip.y - (6 + Math.random() * 22);
+        s.path.push({ x: nx, y: ny, tx: 0 });
+        if (Math.random() < 0.34) s.pause = 0.25 + Math.random() * 0.9; // hesitation
+        if (ny < h * 0.08) s.done = true;
+      }
+    } else {
+      s.fade += dt * 0.25;
+      if (s.fade >= 1) resetClimb(s);
+    }
+
+    var alpha = (1 - s.fade) * 0.5;
+    ctx.beginPath();
+    ctx.strokeStyle = rgb(col.ink, alpha);
+    ctx.lineWidth = 1;
+    for (var i = 0; i < s.path.length; i++) {
+      var p = s.path[i];
+      var x = p.x + (p.tx || 0);
+      if (i === 0) ctx.moveTo(x, p.y); else ctx.lineTo(x, p.y);
+    }
+    ctx.stroke();
+
+    // the present point of contact
+    var last = s.path[s.path.length - 1];
+    ctx.beginPath();
+    ctx.fillStyle = rgb(col.ink, alpha + 0.2);
+    ctx.arc(last.x + (last.tx || 0), last.y, 1.8, 0, Math.PI * 2);
+    ctx.fill();
+  }, { onResize: function (s) { resetClimb(s); } });
+  stages.push(climb);
+
+  /* ============ II. city — outlines revealed by the gaze, kept as memory ============ */
+  function buildCity(s) {
+    var segs = [];
+    var w = s.w, h = s.h;
+    var ground = h * 0.86;
+    var x = -20;
+    while (x < w + 20) {
+      var bw = 36 + Math.random() * 90;
+      var bh = h * (0.18 + Math.random() * 0.45);
+      var top = ground - bh;
+      // outline
+      segs.push([x, ground, x, top]);
+      segs.push([x, top, x + bw, top]);
+      segs.push([x + bw, top, x + bw, ground]);
+      // sparse interior details
+      var floors = Math.floor(bh / (26 + Math.random() * 26));
+      for (var f = 1; f <= floors; f++) {
+        if (Math.random() < 0.55) {
+          var fy = top + (bh / (floors + 1)) * f;
+          var inset = 6 + Math.random() * 10;
+          segs.push([x + inset, fy, x + bw - inset, fy]);
+        }
+      }
+      if (Math.random() < 0.3) { // a thin antenna
+        var ax = x + bw * (0.2 + Math.random() * 0.6);
+        segs.push([ax, top, ax, top - 10 - Math.random() * 26]);
+      }
+      x += bw + (8 + Math.random() * 36);
+    }
+    s.segs = segs.map(function (g) {
+      return { a: { x: g[0], y: g[1] }, b: { x: g[2], y: g[3] }, seen: 0, lit: 0 };
+    });
+  }
+  var city = new Stage('cv-city', function (s, dt) {
+    var ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+    var r = s.canvas.getBoundingClientRect();
+    var mx = pointer.x - r.left, my = pointer.y - r.top;
+    var R = Math.max(120, Math.min(w, h) * 0.22);
+
+    for (var i = 0; i < s.segs.length; i++) {
+      var g = s.segs[i];
+      var cx = (g.a.x + g.b.x) / 2, cy = (g.a.y + g.b.y) / 2;
+      var d = Math.hypot(cx - mx, cy - my);
+      var target = Math.max(0, 1 - d / R);
+      g.lit += (target - g.lit) * Math.min(1, dt * 6);
+      if (g.lit > 0.12) g.seen = Math.min(0.085, g.seen + dt * 0.05); // memory accumulates
+
+      var a = Math.max(g.seen, g.lit * 0.6);
+      if (a < 0.012) continue;
+      ctx.beginPath();
+      ctx.strokeStyle = rgb(col.ink, a);
+      ctx.lineWidth = g.lit > 0.3 ? 1 : 0.7;
+      ctx.moveTo(g.a.x, g.a.y);
+      ctx.lineTo(g.b.x, g.b.y);
+      ctx.stroke();
+    }
+  }, { onResize: function (s) { buildCity(s); } });
+  stages.push(city);
+
+  /* ============ III. foods — particles born and gone (singularity) ============ */
+  function initFoods(s) {
+    s.parts = [];
+    s.origin = { x: s.w * 0.5, y: s.h * 0.78 };
+  }
+  var foods = new Stage('cv-foods', function (s, dt) {
+    var ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+
+    // a fixed origin: the place that makes it singular
+    ctx.beginPath();
+    ctx.strokeStyle = rgb(col.faint, 0.5);
+    ctx.lineWidth = 1;
+    ctx.arc(s.origin.x, s.origin.y, 2.4, 0, Math.PI * 2);
+    ctx.stroke();
+
+    if (s.parts.length < 46 && Math.random() < 0.5) {
+      s.parts.push({
+        x: s.origin.x + (Math.random() - 0.5) * 8,
+        y: s.origin.y - 4,
+        vx: (Math.random() - 0.5) * 5,
+        vy: -(12 + Math.random() * 16),
+        life: 0,
+        span: 5 + Math.random() * 5,
+        ph: Math.random() * Math.PI * 2
+      });
+    }
+    for (var i = s.parts.length - 1; i >= 0; i--) {
+      var p = s.parts[i];
+      p.life += dt;
+      if (p.life > p.span) { s.parts.splice(i, 1); continue; }
+      p.x += (p.vx + Math.sin(p.life * 1.6 + p.ph) * 7) * dt;
+      p.y += p.vy * dt;
+      p.vy *= (1 - dt * 0.06);
+      var k = p.life / p.span;
+      var a = Math.sin(k * Math.PI) * 0.34;
+      ctx.beginPath();
+      ctx.fillStyle = rgb(col.ink, a);
+      ctx.arc(p.x, p.y, 1 + (1 - k) * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }, { onResize: function (s) { initFoods(s); } });
+  stages.push(foods);
+
+  /* ============ IV. luna — the far side is never drawn ============ */
+  function initMoon(s) {
+    s.dots = [];
+    var n = 900;
+    for (var i = 0; i < n; i++) {
+      // points on a sphere (front hemisphere bias via z)
+      var th = Math.random() * Math.PI * 2;
+      var ph = Math.acos(2 * Math.random() - 1);
+      s.dots.push({ th: th, ph: ph, j: Math.random() });
+    }
+  }
+  var moon = new Stage('cv-moon', function (s, dt) {
+    var ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+    var cx = w / 2, cy = h / 2;
+    var R = Math.min(w, h) * 0.34;
+    var rot = s.t * 0.05; // slow rotation — yet the lit face never turns
+
+    for (var i = 0; i < s.dots.length; i++) {
+      var d = s.dots[i];
+      var th = d.th + rot;
+      var sx = Math.sin(d.ph) * Math.cos(th);
+      var sy = Math.cos(d.ph);
+      var sz = Math.sin(d.ph) * Math.sin(th);
+      if (sz < 0) continue;            // back of the sphere: invisible
+      var light = Math.max(0, sx * 0.92 + sz * 0.39); // light from the right
+      if (light < 0.045) continue;     // the dark side is simply not drawn
+      var a = Math.pow(light, 1.5) * (0.16 + 0.5 * sz) * (0.7 + 0.3 * d.j);
+      ctx.beginPath();
+      ctx.fillStyle = rgb(col.ink, Math.min(0.7, a));
+      ctx.arc(cx + sx * R, cy + sy * R, 0.9, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }, { onResize: function (s) { initMoon(s); } });
+  stages.push(moon);
+
+  /* ============ epilogue — a quieter sea ============ */
+  var end = new Stage('cv-end', function (s, dt) {
+    var ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+    var lines = 9;
+    for (var i = 0; i < lines; i++) {
+      var p = i / (lines - 1);
+      var y0 = h * 0.62 + p * h * 0.3;
+      ctx.beginPath();
+      ctx.strokeStyle = rgb(col.ink, 0.04 + 0.08 * Math.sin(p * Math.PI));
+      ctx.lineWidth = 0.7;
+      for (var x = 0; x <= w; x += 7) {
+        var n = Math.sin(x * 0.006 + s.t * 0.3 + i)
+              + 0.4 * Math.sin(x * 0.017 - s.t * 0.2 + i * 1.7);
+        ctx.lineTo ? 0 : 0;
+        var y = y0 + n * 5;
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  });
+  stages.push(end);
+
+  /* ============ render loop ============ */
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    for (var i = 0; i < stages.length; i++) {
+      var s = stages[i];
+      if (!s.canvas || !s.visible) continue;
+      s.t += dt;
+      s.draw(s, dt);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  if (reduceMotion) {
+    // draw a single still frame for each stage
+    stages.forEach(function (s) {
+      if (!s.canvas) return;
+      s.visible = true;
+      s.t = 12;
+      s.draw(s, 0);
+      s.visible = false;
+    });
+  } else {
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
+</body>
+</html>
