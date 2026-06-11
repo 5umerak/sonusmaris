@@ -214,6 +214,8 @@
     border-bottom: 1px solid var(--hair);
     padding-bottom: 6px;
   }
+  #luna a.title-cite { color: inherit; text-decoration: none; transition: border-color .5s ease; }
+  #luna a.title-cite:hover { border-bottom-color: var(--ink); }
   #luna .cite-label {
     display: block;
     margin-top: 1.6em;
@@ -258,26 +260,83 @@
     margin: 0 auto;
   }
 
-  /* ---------- user photos ---------- */
-  .photos {
-    margin-top: 9vh;
+  /* ---------- galleries (photos, animation-free) ---------- */
+  .gallery {
+    min-height: auto;
+    display: block;
+    padding: 4vh 0 10vh;
+  }
+  .gallery .photos {
+    width: 88vw;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 7vh;
+    gap: 14vh;
   }
-  .photos figure { margin: 0; }
+  .photos figure { margin: 0; overflow: hidden; }
   .photos img {
     width: 100%;
     height: auto;
     display: block;
+    cursor: zoom-in;
+    filter: brightness(0.88) opacity(0.85);
+    transition: filter 0.7s cubic-bezier(.22,.61,.36,1),
+                transform 0.7s cubic-bezier(.22,.61,.36,1);
+    will-change: filter, transform;
   }
+  @media (hover: hover) {
+    .photos img:hover {
+      filter: brightness(1.0) opacity(1.0);
+      transform: scale(1.012);
+    }
+  }
+  @media (hover: none) {
+    .photos img { filter: brightness(0.92) opacity(0.92); }
+  }
+
+  /* ---------- lightbox ---------- */
+  #lb {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    align-items: center;
+    justify-content: center;
+  }
+  #lb.on { display: flex; }
+  #lb img {
+    max-width: 94vw;
+    max-height: 94vh;
+    object-fit: contain;
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    display: block;
+  }
+  #lb.on img { opacity: 1; transform: scale(1); }
+  #lb-close {
+    position: fixed;
+    top: 22px; right: 26px;
+    width: 40px; height: 40px;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.6;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+  #lb-close:hover { opacity: 1; border-color: rgba(255,255,255,0.7); }
 
   /* ---------- user links ---------- */
   .links {
     display: flex;
     gap: 2.8em;
-    justify-content: center;
     flex-wrap: wrap;
+    margin-top: 5vh;
   }
   .links a {
     font-family: 'Cormorant Garamond', serif;
@@ -319,29 +378,31 @@
             同じフォルダに置いた相対パス("images/xxx.jpg")か、
             画像URLを "" で囲み、カンマ区切りで並べる。
             空 [] のままなら、その章には何も表示されない。
-   links  : ページ末尾に表示されるリンク。
+   links  : 末尾の自己紹介(About)に表示されるリンク。
             url が空("")のものは表示されない。
+   serialUrl : 連載「脳裏は月の裏ほどわからない」のURL(note)。
+            設定すると、月の章のタイトルがリンクになる。
    ========================================================= */
 window.SITE_CONFIG = {
   photos: {
     climbing: [
-      "images/img_3993.jpg",
+      // "images/climbing-01.jpg",
+      // "images/climbing-02.jpg",
     ],
     city: [
-      "images/_z8a8744_vsco.jpg",
+      // "images/city-01.jpg",
     ],
     foods: [
-      "images/c5d031d83363ba8d668f943e2fe5bf10.jpg",
+      // "images/foods-01.jpg",
     ],
     luna: [
-      "images/img_1444_original.jpg",
     ]
   },
   links: [
-    { label: "Instagram", url: "" },
-    { label: "X", url: "" },
-    { label: "note", url: "" }
-  ]
+    { label: "X",         url: "" },
+    { label: "Instagram", url: "" }
+  ],
+  serialUrl: ""
 };
 </script>
 
@@ -429,23 +490,43 @@ window.SITE_CONFIG = {
   <div class="inner">
     <div class="moonroom rv"><canvas id="cv-moon"></canvas></div>
     <p class="rv d1">どれほど近くにいても、見えるのはいつも同じ面だけだ。<br>裏側は、決して描かれない。</p>
-    <span class="title-cite rv d2">脳裏は月の裏ほどわからない</span>
+    <span class="title-cite rv d2" id="serial">脳裏は月の裏ほどわからない</span>
     <span class="cite-label rv d3">— 連載中</span>
   </div>
 </section>
 
 <div class="div"></div>
 
-<!-- 6. epilogue -->
+<!-- 6. about -->
+<section id="about">
+  <div class="inner">
+    <div class="chapter-head rv">
+      <h2>About</h2>
+      <span class="ja">長田 海音 — Kaito O.</span>
+    </div>
+    <p class="statement rv d1">
+      1998年生まれ。小学三年生の時、叔父から一眼レフを譲り受け、<br>
+      野鳥や天体を撮ることから始めた。<br>
+      以来、岩を登り、都市を歩き、言葉を書きながら、<br>
+      見ることの仕事を続けている。東京を拠点に。
+    </p>
+    <nav class="links rv d2" id="links"></nav>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- 7. epilogue -->
 <section id="epilogue">
   <canvas id="cv-end"></canvas>
   <div class="inner" style="text-align:center;">
     <p class="line rv">音は、海に戻る。</p>
   </div>
-  <nav class="links rv d1" id="links"></nav>
   <div class="sig rv d2">Sonus Maris. <span class="name">— Kaito O.</span></div>
   <footer>© Kaito Osada</footer>
 </section>
+
+<div id="lb"><button id="lb-close">✕</button><img id="lb-img" src="" alt=""></div>
 
 <script>
 (function () {
@@ -521,7 +602,8 @@ window.SITE_CONFIG = {
     if (!list || !list.length) return;
     var sec = document.getElementById(sectionId);
     if (!sec) return;
-    var inner = sec.querySelector('.inner');
+    var gallery = document.createElement('section');
+    gallery.className = 'gallery';
     var wrap = document.createElement('div');
     wrap.className = 'photos';
     list.forEach(function (src) {
@@ -533,11 +615,43 @@ window.SITE_CONFIG = {
       img.decoding = 'async';
       img.src = src;
       img.alt = '';
+      img.addEventListener('click', function () { openLb(src); });
       f.appendChild(img);
       wrap.appendChild(f);
     });
-    if (wrap.children.length) inner.appendChild(wrap);
+    if (!wrap.children.length) return;
+    gallery.appendChild(wrap);
+    sec.parentNode.insertBefore(gallery, sec.nextSibling);
   }
+
+  /* lightbox */
+  var lb = document.getElementById('lb');
+  var lbImg = document.getElementById('lb-img');
+  var lbClose = document.getElementById('lb-close');
+
+  function openLb(src) {
+    lbImg.src = src;
+    lbImg.style.opacity = '0';
+    lbImg.style.transform = 'scale(0.96)';
+    lb.classList.add('on');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        lbImg.style.opacity = '1';
+        lbImg.style.transform = 'scale(1)';
+      });
+    });
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLb() {
+    lb.classList.remove('on');
+    document.body.style.overflow = '';
+    setTimeout(function () { lbImg.src = ''; }, 350);
+  }
+
+  lbClose.addEventListener('click', closeLb);
+  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLb(); });
   if (cfg.photos) {
     renderPhotos('climbing', cfg.photos.climbing);
     renderPhotos('city', cfg.photos.city);
@@ -556,6 +670,17 @@ window.SITE_CONFIG = {
       linksEl.appendChild(a);
     });
     if (!linksEl.children.length) linksEl.remove();
+  }
+  var serialEl = document.getElementById('serial');
+  if (serialEl && cfg.serialUrl) {
+    var sa = document.createElement('a');
+    sa.href = cfg.serialUrl;
+    sa.target = '_blank';
+    sa.rel = 'noopener';
+    sa.className = serialEl.className;
+    sa.id = 'serial';
+    sa.textContent = serialEl.textContent;
+    serialEl.parentNode.replaceChild(sa, serialEl);
   }
 
   /* ============ reveal on scroll ============ */
